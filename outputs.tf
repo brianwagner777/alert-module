@@ -1,4 +1,4 @@
 output "result" {
-  description = "Alert with all attributes."
-  value       = azurerm_logic_app_standard.logic_app
+  description = "Schedule query alert rule with all attributes."
+  value       = azurerm_monitor_scheduled_query_rules_alert_v2.alert_rule
 }
