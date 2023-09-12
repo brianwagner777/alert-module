@@ -44,7 +44,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert" {
   workspace_alerts_storage_enabled = false
   skip_query_validation            = true
   action {
-    action_groups = [azurerm_monitor_action_group.log_fail.id]
+    action_groups = [azurerm_monitor_action_group.action_group.id]
   }
 
   lifecycle {
