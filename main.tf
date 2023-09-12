@@ -27,7 +27,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert" {
 
   evaluation_frequency = var.alert_evaluation_frequency
   window_duration      = var.alert_window_duration
-  scopes               = [module.law_identifiers.workspace_id]
+  scopes               = [var.alert_scope_resource_id]
   severity             = var.alert_severity
   criteria {
     query                   = var.alert_criteria_query
