@@ -55,6 +55,11 @@ variable "alert_severity" {
   type        = number
 }
 
+variable "alert_scope_resource_id" {
+  description = "The resource ID that the alert rule is scoped to."
+  type        = string
+}
+
 variable "alert_criteria_query" {
   description = "The query to run on logs."
   type        = string
