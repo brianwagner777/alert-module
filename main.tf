@@ -1,12 +1,12 @@
-# Create the action group
+# Create the Action Group
 resource "azurerm_monitor_action_group" "action_group" {
-  name                = var.action_group.name
-  resource_group_name = azurerm_resource_group.dh_integration_sfl.name
-  short_name          = "DHSFLLogFail"
-  tags                = local.tags
+  name                = var.action_group_name
+  resource_group_name = data.azurerm_resource_group.main.name
+  short_name          = var.action_group_short_name
+  tags                = var.tags
 
   dynamic "email_receiver" {
-    for_each = var.log_fail_alert.receivers
+    for_each = var.action_group_email_receivers
     content {
       name                    = email_receiver.value["name"]
       email_address           = email_receiver.value["email_address"]
@@ -14,3 +14,43 @@ resource "azurerm_monitor_action_group" "action_group" {
     }
   }
 }
+
+# Create the Scheduled Query Alert Rule (log alert)
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert" {
+  name                = var.alert_name
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
+  description         = var.alert_description
+  enabled             = var.alert_enabled
+  display_name        = var.alert_name
+  tags                = var.tags
+
+  evaluation_frequency = var.alert_evaluation_frequency
+  window_duration      = var.alert_window_duration
+  scopes               = [module.law_identifiers.workspace_id]
+  severity             = var.alert_severity
+  criteria {
+    query                   = var.alert_criteria_query
+    time_aggregation_method = var.alert_criteria_time_aggregation_method
+    threshold               = var.alert_criteria_threshold
+    operator                = var.alert_criteria_operator
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  auto_mitigation_enabled          = false
+  workspace_alerts_storage_enabled = false
+  skip_query_validation            = true
+  action {
+    action_groups = [azurerm_monitor_action_group.log_fail.id]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      enabled
+    ]
+  }
+}
+
