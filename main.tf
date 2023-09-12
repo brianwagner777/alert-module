@@ -16,7 +16,7 @@ resource "azurerm_monitor_action_group" "action_group" {
 }
 
 # Create the Scheduled Query Alert Rule (log alert)
-resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert" {
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_rule" {
   name                = var.alert_name
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
