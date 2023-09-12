@@ -3,11 +3,6 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "location" {
-  description = "Location where the resources will be created."
-  type        = string
-}
-
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all created resources."
